@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Protocolo San Valentín 2026</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        body { font-family: 'Arial', sans-serif; background-color: #ffebee; text-align: center; padding: 20px; }
+        .card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); max-width: 400px; margin: auto; }
+        h1 { color: #d32f2f; font-size: 1.5rem; }
+        button { background-color: #ff4081; color: white; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-size: 16px; margin: 10px; transition: 0.3s; }
+        #btn-no { position: absolute; }
+        .hidden { display: none; }
+        img { width: 100px; margin-bottom: 20px; }
+        /* Estilo para resaltar el mensaje final */
+        .mensaje-final { font-size: 1.8rem; font-weight: bold; color: #d32f2f; margin-top: 20px; display: block; }
+    </style>
+</head>
+<body>
+
+<audio id="musica-victoria" src="Naruto.mp3" preload="auto"></audio>
+
+<div class="card" id="quiz-container">
+    <div id="step1">
+        <h1>🔐 Verificación de Identidad</h1>
+        <p>¿En qué lugar fue la primera vez que te regalé flores?</p>
+        <input type="text" id="ans1" placeholder="Nombre del lugar...">
+        <br><button onclick="checkStep1()">Verificar</button>
+    </div>
+
+    <div id="step2" class="hidden">
+        <h1>🏎️ Pregunta de Telemetría</h1>
+        <p>En esta relación, ¿quién es el más divertido?</p>
+        <button onclick="nextStep(3)">Tu poderisisimo enamorado</button>
+        <button onclick="nextStep(3)">Yo (aunque sabes muy bien que es tu amorcito)</button>
+    </div>
+
+    <div id="step3" class="hidden">
+        <h1>🍥 Pregunta de Suma Importancia</h1>
+        <p>¿Quién es el jugador de futbol que más admiramos?</p>
+        <button onclick="alert('¡Incorrecto! Osea si ya, amor, pero no tanto jajaja piensalo bien');">La tortuga ninja, Kylian Mbappe</button>
+        <button onclick="nextStep(4)">El GOAT, la cabra, el mejor futbolista de todos los tiempos, don Cristiano Ronaldo dos Santos Aveiro</button>
+    </div>
+
+    <div id="final-step" class="hidden">
+        <h1>❤️ La Gran Pregunta</h1>
+        <p>Has pasado todas las pruebas. Ahora, la telemetría dice que somos el equipo perfecto...</p>
+        
+        <h2 style="margin-bottom: 5px;">¿Quieres ser mi San Valentín?</h2>
+        
+        <p style="font-size: 0.8rem; color: #666; font-style: italic; margin-top: 0;">
+            (No seas graciosa en picarle en el NO)
+        </p>
+
+        <button id="btn-si" onclick="celebrar()">¡SÍ! 😍</button>
+        <button id="btn-no" onmouseover="moverBoton()" onclick="moverBoton()">NO ❌</button>
+    </div>
+</div>
+
+<script>
+    function checkStep1() {
+        let rpta = document.getElementById('ans1').value.toLowerCase();
+        if(rpta.includes("cine")) {
+            nextStep(2);
+        } else {
+            alert("Error de acceso. Pista: Es un lugar al que hemos ido muuuchas veces e incluso recientemente.");
+        }
+    }
+
+    function nextStep(step) {
+        document.getElementById('step1').classList.add('hidden');
+        document.getElementById('step2').classList.add('hidden');
+        document.getElementById('step3').classList.add('hidden');
+        
+        if(step === 2) document.getElementById('step2').classList.remove('hidden');
+        if(step === 3) document.getElementById('step3').classList.remove('hidden');
+        if(step === 4) document.getElementById('final-step').classList.remove('hidden');
+    }
+
+    function moverBoton() {
+        const btnNo = document.getElementById('btn-no');
+        const x = Math.random() * (window.innerWidth - btnNo.offsetWidth);
+        const y = Math.random() * (window.innerHeight - btnNo.offsetHeight);
+        btnNo.style.left = x + 'px';
+        btnNo.style.top = y + 'px';
+    }
+
+    function lanzarConfeti() {
+        var duration = 5 * 1000;
+        var animationEnd = Date.now() + duration;
+        var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+        function randomInRange(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        var interval = setInterval(function() {
+            var timeLeft = animationEnd - Date.now();
+            if (timeLeft <= 0) return clearInterval(interval);
+            var particleCount = 50 * (timeLeft / duration);
+            confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+            confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+        }, 250);
+    }
+
+    function celebrar() {
+        const audio = document.getElementById('musica-victoria');
+        
+        // Forzamos la carga y reproducción
+        audio.load(); 
+        audio.play().then(() => {
+            console.log("Reproducción iniciada con éxito");
+        }).catch(error => {
+            console.error("Error al reproducir el audio: ", error);
+            // Si falla, intentamos una vez más
+            setTimeout(() => { audio.play(); }, 100);
+        });
+        
+        lanzarConfeti();
+
+        document.body.innerHTML = `
+            <div class="card">
+                <h1>🏆 ¡POLE POSITION! 🏆</h1>
+                <img src="1.jpg" alt="Nuestro momento" style="width: 100%; border-radius: 15px; margin-bottom: 15px;">
+                
+                <p>Sabía que aceptarías sin presiones, amor jajaja. Prepárate para el mejor 14 de febrero.</p>
+                
+                <img src="naruto.jpg" alt="Naruto" style="width: 100%; border-radius: 15px; margin-top: 10px;">
+
+                <span class="mensaje-final">Te amo mucho, mi arroz con leche.</span>
+            </div>
+        `;
+    }
+</script>
+
+</body>
+</html>
